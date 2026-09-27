@@ -1,0 +1,12 @@
+weather_pipeline:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: localhost
+      user: admin
+      password: admin_password
+      port: 5432
+      dbname: weather_db
+      schema: public
+      threads: 1

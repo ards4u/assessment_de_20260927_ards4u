@@ -1,0 +1,17 @@
+﻿Scripts/
+Lib/
+Include/
+pyvenv.cfg
+share/
+venv/
+*.exe
+__pycache__/
+*.pyc
+.env
+
+dbt/weather_pipeline/target/
+dbt/weather_pipeline/logs/
+.dbt/
+
+.DS_Store
+Thumbs.db

@@ -1,0 +1,32 @@
+version: 2
+
+models:
+  - name: stg_weather
+    description: >
+      Cleaned, cast, one-row-per-city-per-day staging view over
+      raw_weather. No aggregation or business logic here — that's the
+      mart's job.
+    columns:
+      - name: weather_id
+        description: "Surrogate key: md5(city || weather_date)."
+        tests:
+          - unique
+          - not_null
+      - name: city
+        description: City name.
+        tests:
+          - not_null
+      - name: weather_date
+        description: Calendar date the readings apply to.
+        tests:
+          - not_null
+      - name: temp_max_c
+        description: Daily max temperature, °C.
+      - name: temp_min_c
+        description: Daily min temperature, °C.
+      - name: precipitation_mm
+        description: Daily total precipitation, mm.
+      - name: windspeed_max_kmh
+        description: Daily max wind speed, km/h.
+      - name: _loaded_at
+        description: When this row was last upserted by the extract/load job.

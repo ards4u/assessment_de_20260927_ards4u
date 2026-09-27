@@ -1,0 +1,28 @@
+version: 2
+
+models:
+  - name: mart_daily_weather
+    description: >
+      One row per city per day: daily readings plus a trailing 7-day
+      rolling average max temperature and a hot/mild/cold classification.
+      This is the table BI tools and the walkthrough notebook query.
+    columns:
+      - name: weather_id
+        tests:
+          - unique
+          - not_null
+      - name: city
+        tests:
+          - not_null
+      - name: weather_date
+        tests:
+          - not_null
+      - name: temp_mean_c
+        description: "(temp_max_c + temp_min_c) / 2, rounded to 1 decimal."
+      - name: temp_max_7d_avg_c
+        description: Trailing 7-day rolling average of temp_max_c, partitioned by city.
+      - name: day_classification
+        description: "hot (max >= 30°C), cold (max <= 5°C), or mild."
+        tests:
+          - accepted_values:
+              values: ['hot', 'mild', 'cold']

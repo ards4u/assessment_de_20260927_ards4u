@@ -1,0 +1,38 @@
+version: 2
+
+sources:
+  - name: raw
+    description: Raw, unmodified landing tables loaded directly from source APIs.
+    schema: public
+    tables:
+      - name: raw_weather
+        description: >
+          One row per (city, weather_date), upserted by the Python
+          extract/load job. Columns are a 1:1 copy of the Open-Meteo
+          `/v1/archive` daily response — no casting or renaming happens
+          here, only in staging.
+        loaded_at_field: _loaded_at
+        columns:
+          - name: city
+            description: City name as configured in the extractor (not an API field).
+          - name: latitude
+            description: Latitude Open-Meteo resolved the request to.
+          - name: longitude
+            description: Longitude Open-Meteo resolved the request to.
+          - name: weather_date
+            description: Calendar date this row's readings apply to.
+          - name: temperature_2m_max
+            description: Daily max 2m air temperature, °C, verbatim from Open-Meteo.
+          - name: temperature_2m_min
+            description: Daily min 2m air temperature, °C, verbatim from Open-Meteo.
+          - name: precipitation_sum
+            description: Daily total precipitation, mm, verbatim from Open-Meteo.
+          - name: windspeed_10m_max
+            description: Daily max 10m wind speed, km/h, verbatim from Open-Meteo.
+          - name: timezone
+            description: IANA timezone Open-Meteo used to bucket the day.
+          - name: _loaded_at
+            description: When this row was last written by the extract/load job.
+        freshness:
+          warn_after: {count: 30, period: hour}
+          error_after: {count: 48, period: hour}
